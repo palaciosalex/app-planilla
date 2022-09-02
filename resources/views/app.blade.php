@@ -17,16 +17,16 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link { @yield('page1') }" aria-current="page" href="/">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Trabajadores</a>
+          <a class="nav-link { @yield('page2') }" href="/trabajadores">Trabajadores</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Asistencias</a>
+          <a class="nav-link { @yield('page3') }" href="#">Asistencias</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Reportes</a>
+          <a class="nav-link { @yield('page4') }" href="#">Reportes</a>
         </li>
       </ul>
     </div>
