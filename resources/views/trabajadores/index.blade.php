@@ -9,7 +9,7 @@
         <input class="form-control" type="text" placeholder="Buscar">
     </div>
     <div class="col-3">
-        <button class="btn btn-success">Agregar</button>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#formAgregar">Agregar</button>
     </div>
 </div>
 <div class="row">
@@ -29,4 +29,46 @@
     </table>
 </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="formAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center" id="exampleModalLabel">Agregar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" name="nombre" id="nombre">
+          </div>
+          <div class="row g-2">
+            <div class="col-4">
+                <label for="dni" class="form-label">DNI</label>
+                <input type="text" class="form-control" name="dni" id="dni">
+            </div>
+            <div class="col-8">
+                <label for="dni" class="form-label">Correo</label>
+                <input type="text" class="form-control" name="dni" id="correo">
+            </div>
+          <div>
+          <div class="mb-3 col-4">
+              <label for="dni" class="form-label">Ingreso por hora</label>
+              <input type="number" class="form-control" name="dni" id="ingreso_hora">
+          </div>
+        <form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection
+@section('scripts')
+<script src="{{ asset('static/js/functionEmployees.js') }}"></script>
 @endsection

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\EmployeesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,5 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::view('/trabajadores', 'trabajadores.index');
+Route::post('trabajadores/getEmployee',[EmployeesController::class,'getEmployee']);
+Route::resource('trabajadores', EmployeesController::class);
