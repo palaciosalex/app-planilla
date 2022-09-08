@@ -12,14 +12,19 @@ $( document ).ready(function() {
     aProcessing:true,
     aServerSide:true,
     responsive:true,
-    ajax: "getEmployees",
+    ajax: "trabajadores/getEmployees",
     columns: [
-      {data: 'id', name:'id'},
-      {data: 'nombre', name:'nombre'},
-      {data: 'dni', name:'dni'},
-      {data: 'email', name:'email'},
-      {data: 'ingreso_hora', name:'ingreso_hora'},
-      {data: 'estado', name:'estado'},
+      {data: 'id'},
+      {data: 'nombre'},
+      {data: 'dni'},
+      {data: 'email'},
+      {data: 'ingreso_hora'},
+      {data: 'id',
+        render: function ( data, type, row ) {
+          return "<button type='button' class='btn btn-warning btn-sm'><i class='bi bi-pencil-square'></i></button>"+
+          "&nbsp;<button type='button' class='btn btn-danger btn-sm'><i class='bi bi-trash-fill'></i></button>";
+        } 
+      },
     ]
   });
 
