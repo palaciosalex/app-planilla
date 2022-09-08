@@ -5,22 +5,19 @@
 <div class="container">
 <h5 class="text-center">Lista de trabajadores</h5>
 <div class="row">
-    <div class="col-4">
-        <input class="form-control" type="text" placeholder="Buscar">
-    </div>
     <div class="col-3">
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#formAgregar">Agregar</button>
     </div>
 </div>
-<div class="row">
-    <table class="table">
+<div class="row" id="seccion-table">
+    <table class="table" id="tabla-trabajadores">
     <thead>
         <tr>
+        <th scope="col">ID</th>
         <th scope="col">Nombre</th>
         <th scope="col">DNI</th>
         <th scope="col">Correo</th>
         <th scope="col">Ingreso x Hora</th>
-        <th scope="col">Estado</th>
         <th scope="col">Acciónes</th>
         </tr>
     </thead>
@@ -34,7 +31,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-center" id="exampleModalLabel">Agregar</h5>
+        <h5 class="modal-title text-center" id="exampleModalLabel">Agregar Trabajador</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"></span>
         </button>
@@ -60,9 +57,10 @@
               <input type="number" class="form-control" name="dni" id="ingreso_hora">
           </div>
         <form>
+        <div id="respuesta"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" id="btnCerrar" data-bs-dismiss="modal">Cerrar</button>
         <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
       </div>
     </div>

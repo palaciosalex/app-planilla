@@ -16,5 +16,5 @@ use App\Http\Controllers\EmployeesController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::post('trabajadores/getEmployee',[EmployeesController::class,'getEmployee']);
+Route::get('trabajadores/getEmployees', [EmployeesController::class, 'getEmployees']);
 Route::resource('trabajadores', EmployeesController::class);

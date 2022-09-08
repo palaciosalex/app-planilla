@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Employee;
+use DataTables;
 
 class EmployeesController extends Controller
 {
@@ -13,7 +15,8 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        return view('trabajadores.index');
+        $employees=Employee::all();
+        return view('trabajadores.index', ['employees' => $employees]);
     }
 
     /**
@@ -34,8 +37,25 @@ class EmployeesController extends Controller
      */
     public function store(Request $request)
     {
-        $nombre=$request->nombre();
-        return response()->json(['success' => $nombre]);
+        $validator = \Validator::make($request->all(),[
+            'nombre' => 'required|max:100',
+            'dni' => 'required|max:8',
+            'email' => 'required|max:100',
+            'ingreso_hora' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['success' => false,'errors'=>$validator->errors()->all()]);
+        }
+        $employee=new Employee;
+        $employee->nombre=$request->nombre;
+        $employee->dni=$request->dni;
+        $employee->email=$request->email;
+        $employee->ingreso_hora=$request->ingreso_hora;
+        $employee->estado=$request->estado;
+        $employee->save();
+        return response()->json(['success' => true,'msg'=>"La operación se realizó con exito"]);
+        
     }
 
     /**
@@ -83,9 +103,9 @@ class EmployeesController extends Controller
         //
     }
 
-    public function getEmployee(Request $request)
+    public function getEmployees()
     {
-        $nombre=$request->nombre();
-        return response()->json(['success' => $nombre]);
+        $employees=Employee::all();
+        return DataTables::of($employees)->toJson();
     }
 }
