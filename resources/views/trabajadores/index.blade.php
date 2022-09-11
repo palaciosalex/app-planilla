@@ -6,7 +6,7 @@
 <h5 class="text-center">Lista de trabajadores</h5>
 <div class="row">
     <div class="col-3">
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#formAgregar">Agregar</button>
+        <button class="btn btn-success" id="btnAgregar">Agregar</button>
     </div>
 </div>
 <div class="row" id="seccion-table">
@@ -18,7 +18,7 @@
         <th scope="col">DNI</th>
         <th scope="col">Correo</th>
         <th scope="col">Ingreso x Hora</th>
-        <th scope="col">Acciónes</th>
+        <th scope="col">Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -31,13 +31,13 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-center" id="exampleModalLabel">Agregar Trabajador</h5>
+        <h5 class="modal-title text-center" id="tituloForm">Agregar Trabajador</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"></span>
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="formTrabajador">
           <div class="mb-3">
               <label for="nombre" class="form-label">Nombre</label>
               <input type="text" class="form-control" name="nombre" id="nombre">
@@ -49,7 +49,7 @@
             </div>
             <div class="col-8">
                 <label for="dni" class="form-label">Correo</label>
-                <input type="text" class="form-control" name="dni" id="correo">
+                <input type="text" class="form-control" name="correo" id="correo">
             </div>
           <div>
           <div class="mb-3 col-4">
@@ -61,7 +61,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="btnCerrar" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+        <button type="button" class="btn btn-primary" id="btnGuardar" value="0">Guardar</button>
       </div>
     </div>
   </div>

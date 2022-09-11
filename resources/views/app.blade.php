@@ -23,7 +23,7 @@
           <a class="nav-link { @yield('page1') }" aria-current="page" href="/">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link { @yield('page2') }" href="/trabajadores">Trabajadores</a>
+          <a class="nav-link { @yield('page2') }" href="{{ route('trabajadores.index') }}">Trabajadores</a>
         </li>
         <li class="nav-item">
           <a class="nav-link { @yield('page3') }" href="#">Asistencias</a>

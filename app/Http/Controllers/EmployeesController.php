@@ -66,7 +66,8 @@ class EmployeesController extends Controller
      */
     public function show($id)
     {
-        //
+        $employee=Employee::find($id);
+        return response()->json($employee);
     }
 
     /**
@@ -89,7 +90,24 @@ class EmployeesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = \Validator::make($request->all(),[
+            'nombre' => 'required|max:100',
+            'dni' => 'required|max:8',
+            'email' => 'required|max:100',
+            'ingreso_hora' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['success' => false,'errors'=>$validator->errors()->all()]);
+        }
+        $employee=Employee::find($id);
+        $employee->nombre=$request->nombre;
+        $employee->dni=$request->dni;
+        $employee->email=$request->email;
+        $employee->ingreso_hora=$request->ingreso_hora;
+        $employee->estado=$request->estado;
+        $employee->save();
+        return response()->json(['success' => true,'msg'=>"La operación se realizó con exito"]);
     }
 
     /**
@@ -100,12 +118,15 @@ class EmployeesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $employee=Employee::find($id);
+        $employee->estado="D";
+        $employee->save();
+        return response()->json(['success' => true,'msg'=>"La operación se realizó con exito"]);
     }
 
     public function getEmployees()
     {
-        $employees=Employee::all();
+        $employees=Employee::where('estado', '=', 'A');
         return DataTables::of($employees)->toJson();
     }
 }

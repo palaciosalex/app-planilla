@@ -1,5 +1,102 @@
 const URL="http://localhost:8000/";
 
+var tablaTrabajadores = $('#tabla-trabajadores').DataTable({
+  language: {
+    "decimal": "",
+    "emptyTable": "No hay información",
+    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+    "infoPostFix": "",
+    "thousands": ",",
+    "lengthMenu": "Mostrar _MENU_ Entradas",
+    "loadingRecords": "Cargando...",
+    "processing": "Procesando...",
+    "search": "Buscar:",
+    "zeroRecords": "Sin resultados encontrados",
+    "paginate": {
+        "first": "Primero",
+        "last": "Ultimo",
+        "next": "Siguiente",
+        "previous": "Anterior"
+      }
+  },
+  aProcessing:true,
+  aServerSide:true,
+  responsive:true,
+  ajax: URL+"trabajadores/getEmployees",
+  columns: [
+    {data: 'id'},
+    {data: 'nombre'},
+    {data: 'dni'},
+    {data: 'email'},
+    {data: 'ingreso_hora'},
+    {data: 'id',
+      render: function ( data, type, row ) {
+        return "<button class='btn btn-warning btn-sm' onclick='showModal("+data+")'>"+
+                "<i class='bi bi-pencil-square'></i>"+
+               "</button>&nbsp;"+
+               "<button class='btn btn-danger btn-sm' onclick='fntEliminar("+data+")'>"+
+                "<i class='bi bi-trash-fill'></i>"+
+               "</button>";
+      } 
+    },
+  ]
+});
+
+
+function showModal(id){
+
+  $.ajax({
+    type: "GET",
+    url: URL+"trabajadores/"+id,
+    dataType: 'json',
+    success: function (data) {
+
+      $("#nombre").val(data.nombre);
+      $("#dni").val(data.dni);
+      $("#correo").val(data.email);
+      $("#ingreso_hora").val(data.ingreso_hora);
+      $("#formAgregar").modal('show');
+      $("#btnGuardar").val(id);
+      $("#tituloForm").html("Editar Trabajador");
+      $("#respuesta").html("");
+    },
+    error: function (data) {
+      alert("Error en el servidor");
+    }
+  });
+}
+
+function fntEliminar(id){
+
+  swal({
+    text: "Estas seguro(a) que desea eliminar este elemento! ",
+    icon: "warning",
+    buttons: ["Cancelar", "Aceptar"],
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+      $.ajax({
+        type: "DELETE",
+        url: URL+"trabajadores/"+id,
+        success: function (data) {
+            if(data.success){
+              swal("Listo", "La operación se realizo con exito", "success");
+              tablaTrabajadores.ajax.reload();
+            }else{
+              alert("Error en el servidor");
+            }
+        },
+        error: function () {
+            alert("Error en el servidor");
+        }
+      });
+    }
+  });
+}
+
+
 $( document ).ready(function() {
 
   $.ajaxSetup({
@@ -8,30 +105,7 @@ $( document ).ready(function() {
       }
   }); 
 
-  var tablaTrabajadores = $('#tabla-trabajadores').DataTable({
-    aProcessing:true,
-    aServerSide:true,
-    responsive:true,
-    ajax: "trabajadores/getEmployees",
-    columns: [
-      {data: 'id'},
-      {data: 'nombre'},
-      {data: 'dni'},
-      {data: 'email'},
-      {data: 'ingreso_hora'},
-      {data: 'id',
-        render: function ( data, type, row ) {
-          return "<button type='button' class='btn btn-warning btn-sm'><i class='bi bi-pencil-square'></i></button>"+
-          "&nbsp;<button type='button' class='btn btn-danger btn-sm'><i class='bi bi-trash-fill'></i></button>";
-        } 
-      },
-    ]
-  });
-
   $('#btnGuardar').click(function(){
-   //we will send data and recive data fom our AjaxController
-   //alert("im just clicked click me");
-
 
       var formData = {
          nombre: $("#nombre").val(),
@@ -39,22 +113,24 @@ $( document ).ready(function() {
          email: $("#correo").val(),
          ingreso_hora: $("#ingreso_hora").val(),
          estado: "A",
-     };
-
-      //var state = jQuery('#btn-save').val();
-      var type = "POST";
-      //var todo_id = jQuery('#todo_id').val();
-      var ajaxurl = "";
+      };
+      var id = $('#btnGuardar').val();
+      if(id == "0"){
+        var type = "POST";
+        var ajaxurl = URL+"trabajadores";
+      }else{
+        var type = "PATCH";
+        var ajaxurl = URL+"trabajadores/"+id;
+      }
 
       $.ajax({
-
          type: type,
          url: ajaxurl,
          data: formData,
          dataType: 'json',
          success: function (data) {
              if(data.success){
-               swal("Listo", "Se agrego un nuevo trabajador", "success");
+               swal("Listo", "La operación se realizo con exito", "success");
                $("#formAgregar").modal('hide');
                tablaTrabajadores.ajax.reload();
              }else{
@@ -67,6 +143,14 @@ $( document ).ready(function() {
       });
    });
 
+   $('#btnAgregar').click(function(){
+
+      $("#formTrabajador")[0].reset();
+      $("#btnGuardar").val('0');
+      $("#formAgregar").modal('show');
+      $("#respuesta").html("");
+
+   });
 
 
 });
