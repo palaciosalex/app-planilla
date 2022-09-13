@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\AsisstsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,3 +19,4 @@ Route::get('/', function () {
 });
 Route::get('trabajadores/getEmployees', [EmployeesController::class, 'getEmployees']);
 Route::resource('trabajadores', EmployeesController::class);
+Route::resource('asistencias', AsisstsController::class);

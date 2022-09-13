@@ -1,26 +1,46 @@
 @extends('app')
-@section('titulo','Trabajadores')
-@section('page2','active')
+@section('titulo','Asistencias')
+@section('page3','active')
 @section('scripts')
-<script src="{{ asset('static/js/functionEmployees.js') }}"></script>
+
 @endsection
 @section('contenido')
 <div class="container">
-<h5 class="text-center">Lista de Trabajadores</h5>
-<div class="row">
+<h5 class="text-center">Lista de Asistencias</h5>
+<div class="row g-3">
     <div class="col-3">
-        <button class="btn btn-success" id="btnAgregar">Agregar</button>
+        <label class="form-label">Seleccionar Trabajador</label>
+        <select class="form-select form-select-sm" aria-label="Default select example">
+            <option selected>Open this select menu</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+    </div>
+    <div class="col-2">
+        <label class="form-label">Fecha inicial</label>
+        <input type="date" class="form-control form-control-sm" >
+    </div>
+    <div class="col-2">
+        <label class="form-label">Fecha final</label>
+        <input type="date" class="form-control form-control-sm" >
+    </div>
+    <div class="col-2 align-self-end">
+        <button type="button" class="btn btn-secondary btn-sm">Filtrar</button>
+    </div>
+    <div class="col-3 align-self-end ">
+        <button type="button" class="btn btn-success btn-sm">Agregar</button>
+        <button type="button" class="btn btn-success btn-sm">Importar</button>
     </div>
 </div>
 <div class="row" id="seccion-table">
     <table class="table" id="tabla-trabajadores">
     <thead>
         <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">DNI</th>
-        <th scope="col">Correo</th>
-        <th scope="col">Ingreso x Hora</th>
+        <th scope="col">Trabajador</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Ingreso</th>
+        <th scope="col">Salida</th>
         <th scope="col">Acciones</th>
         </tr>
     </thead>

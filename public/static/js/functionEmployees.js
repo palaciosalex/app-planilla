@@ -1,4 +1,4 @@
-const URL="http://localhost:8000/";
+
 
 var tablaTrabajadores = $('#tabla-trabajadores').DataTable({
   language: {
@@ -24,7 +24,9 @@ var tablaTrabajadores = $('#tabla-trabajadores').DataTable({
   aProcessing:true,
   aServerSide:true,
   responsive:true,
-  ajax: URL+"trabajadores/getEmployees",
+  //ajax: URL+"trabajadores/getEmployees",
+  ajax: 'trabajadores/getEmployees',
+  type: 'GET',
   columns: [
     {data: 'id'},
     {data: 'nombre'},
@@ -44,12 +46,39 @@ var tablaTrabajadores = $('#tabla-trabajadores').DataTable({
   ]
 });
 
+function fntEliminar(id){
+  
+  swal({
+    text: "Estas seguro(a) que desea eliminar este elemento! ",
+    icon: "warning",
+    buttons: ["Cancelar", "Aceptar"],
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+      $.ajax({
+        type: "DELETE",
+        url: "trabajadores/"+id,
+        success: function (data) {
+            if(data.success){
+              swal("Listo", "La operación se realizo con exito", "success");
+              tablaTrabajadores.ajax.reload();
+            }else{
+              alert("Error en el servidor");
+            }
+        },
+        error: function () {
+            alert("Error en el servidor");
+        }
+      });
+    }
+  });
+}
 
 function showModal(id){
 
   $.ajax({
     type: "GET",
-    url: URL+"trabajadores/"+id,
+    url: "trabajadores/"+id,
     dataType: 'json',
     success: function (data) {
 
@@ -67,35 +96,6 @@ function showModal(id){
     }
   });
 }
-
-function fntEliminar(id){
-
-  swal({
-    text: "Estas seguro(a) que desea eliminar este elemento! ",
-    icon: "warning",
-    buttons: ["Cancelar", "Aceptar"],
-  })
-  .then((willDelete) => {
-    if (willDelete) {
-      $.ajax({
-        type: "DELETE",
-        url: URL+"trabajadores/"+id,
-        success: function (data) {
-            if(data.success){
-              swal("Listo", "La operación se realizo con exito", "success");
-              tablaTrabajadores.ajax.reload();
-            }else{
-              alert("Error en el servidor");
-            }
-        },
-        error: function () {
-            alert("Error en el servidor");
-        }
-      });
-    }
-  });
-}
-
 
 $( document ).ready(function() {
 
@@ -117,10 +117,10 @@ $( document ).ready(function() {
       var id = $('#btnGuardar').val();
       if(id == "0"){
         var type = "POST";
-        var ajaxurl = URL+"trabajadores";
+        var ajaxurl = "trabajadores";
       }else{
         var type = "PATCH";
-        var ajaxurl = URL+"trabajadores/"+id;
+        var ajaxurl = "trabajadores/"+id;
       }
 
       $.ajax({
@@ -152,6 +152,8 @@ $( document ).ready(function() {
 
    });
 
+
+  
 
 });
 
