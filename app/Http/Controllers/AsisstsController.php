@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Employee;
+use App\Models\Asisst;
+use DataTables;
+use Illuminate\Support\Facades\DB;
+use Excel;
 
 class AsisstsController extends Controller
 {
@@ -13,7 +18,8 @@ class AsisstsController extends Controller
      */
     public function index()
     {
-        return view('asistencias.index');
+        $employees= Employee::all();
+        return view('asistencias.index',['employees' => $employees]);
     }
 
     /**
@@ -34,7 +40,24 @@ class AsisstsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = \Validator::make($request->all(),[
+            'fecha' => 'required|date',
+            'hora' => 'required',
+            'trabajador_id' => 'required',
+            'tipo' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['success' => false,'errors'=>$validator->errors()->all()]);
+        }
+        $asisst=new Asisst;
+        $asisst->fecha=$request->fecha;
+        $asisst->hora=$request->hora;
+        $asisst->tipo=$request->tipo;
+        $asisst->employee_id=$request->trabajador_id;
+        $asisst->save();
+        return response()->json(['success' => true,'msg'=>"La operación se realizó con exito"]);
+        
     }
 
     /**
@@ -80,5 +103,32 @@ class AsisstsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getAssists()
+    {
+        $asissts = DB::table('asissts')
+        ->select('asissts.*', 'employees.nombre as trabajador')
+        ->join('employees', 'employees.id', '=', 'asissts.employee_id')
+        ->get();
+        return DataTables::of($asissts)->toJson();
+    }
+
+    public function import(Request $request)
+    {
+        if($request->hasFile('archivoImportacion')){
+            $path = $request->file('archivoImportacion')->getRealPath();
+            $datos = Excel::load($path, function($reader){
+            })->get();
+
+            if(!empty($datos) && $datos->count()){
+                $datos->toArray();
+                for($i=0; $i< count($datos); $i++){
+                    $datosImportar[]=$datos[$i];
+                }
+            }
+
+            Asisst::insert($datosImportar);
+        }
     }
 }

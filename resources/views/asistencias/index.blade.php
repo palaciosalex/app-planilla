@@ -2,7 +2,7 @@
 @section('titulo','Asistencias')
 @section('page3','active')
 @section('scripts')
-
+<script src="{{ asset('static/js/functionAssists.js') }}"></script>
 @endsection
 @section('contenido')
 <div class="container">
@@ -10,37 +10,37 @@
 <div class="row g-3">
     <div class="col-3">
         <label class="form-label">Seleccionar Trabajador</label>
-        <select class="form-select form-select-sm" aria-label="Default select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+        <select class="form-select form-select-sm" id="trabajador">
+            <option selected value="0">Todos</option>
+            @foreach ($employees as $employee)
+              <option value="{{ $employee->id }}">{{ $employee->nombre }}</option>
+            @endforeach
         </select>
     </div>
     <div class="col-2">
         <label class="form-label">Fecha inicial</label>
-        <input type="date" class="form-control form-control-sm" >
+        <input type="date" class="form-control form-control-sm" value="{{ date('Y-m-d', strtotime('last sunday')) }}">
     </div>
     <div class="col-2">
         <label class="form-label">Fecha final</label>
-        <input type="date" class="form-control form-control-sm" >
+        <input type="date" class="form-control form-control-sm" value="{{ date('Y-m-d', strtotime('friday this week')) }}">
     </div>
     <div class="col-2 align-self-end">
         <button type="button" class="btn btn-secondary btn-sm">Filtrar</button>
     </div>
     <div class="col-3 align-self-end ">
-        <button type="button" class="btn btn-success btn-sm">Agregar</button>
-        <button type="button" class="btn btn-success btn-sm">Importar</button>
+        <button type="button" class="btn btn-success btn-sm" id="btnAgregar">Agregar</button>
+        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#formImport">Importar</button>
     </div>
 </div>
 <div class="row" id="seccion-table">
-    <table class="table" id="tabla-trabajadores">
+    <table class="table" id="tabla-asistencias">
     <thead>
         <tr>
         <th scope="col">Trabajador</th>
         <th scope="col">Fecha</th>
-        <th scope="col">Ingreso</th>
-        <th scope="col">Salida</th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Hora</th>
         <th scope="col">Acciones</th>
         </tr>
     </thead>
@@ -49,44 +49,7 @@
     </table>
 </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="formAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-center" id="tituloForm">Agregar Trabajador</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="formTrabajador">
-          <div class="mb-3">
-              <label for="nombre" class="form-label">Nombre</label>
-              <input type="text" class="form-control" name="nombre" id="nombre">
-          </div>
-          <div class="row g-2">
-            <div class="col-4">
-                <label for="dni" class="form-label">DNI</label>
-                <input type="text" class="form-control" name="dni" id="dni">
-            </div>
-            <div class="col-8">
-                <label for="dni" class="form-label">Correo</label>
-                <input type="text" class="form-control" name="correo" id="correo">
-            </div>
-          <div>
-          <div class="mb-3 col-4">
-              <label for="dni" class="form-label">Ingreso por hora</label>
-              <input type="number" class="form-control" name="dni" id="ingreso_hora">
-          </div>
-        <form>
-        <div id="respuesta"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="btnCerrar" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" id="btnGuardar" value="0">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
+@include('asistencias.modals.import')
+@include('asistencias.modals.add')
+
 @endsection

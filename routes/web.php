@@ -19,4 +19,5 @@ Route::get('/', function () {
 });
 Route::get('trabajadores/getEmployees', [EmployeesController::class, 'getEmployees']);
 Route::resource('trabajadores', EmployeesController::class);
+Route::get('asistencias/getAssists', [AsisstsController::class, 'getAssists']);
 Route::resource('asistencias', AsisstsController::class);
