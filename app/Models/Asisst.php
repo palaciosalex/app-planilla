@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Asisst extends Model
 {
     use HasFactory;
+    protected $fillable = ['fecha_hora','tipo','employee_id'];
 }

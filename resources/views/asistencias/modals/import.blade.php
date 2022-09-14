@@ -8,6 +8,7 @@
           <span aria-hidden="true"></span>
         </button>
       </div>
+      <form id="formImportacion" enctype="multipart/form-data">
       <div class="modal-body">
           <div class="mb-3">
             <p>La importacion se realiza en base a la siguiente plantilla.</p>
@@ -15,14 +16,15 @@
           </div>
           <div class="mb-3">
             <label for="archivoImportacion" class="form-label">Seleccionar archivo</label>
-            <input class="form-control" type="file" id="archivoImportacion">
+            <input class="form-control" type="file" id="archivoImportacion" name="archivoImportacion">
           </div>
         <div id="respuesta-import"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="btnCerrar" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" id="btnImportar" value="0">Importar</button>
+        <button type="submit" class="btn btn-primary" id="btnImportar" value="0">Importar</button>
       </div>
+      </form>
     </div>
   </div>
 </div>

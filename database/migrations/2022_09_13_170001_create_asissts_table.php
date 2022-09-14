@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('asissts', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha');
+            $table->dateTime('fecha_hora', $precision = 0);
             $table->enum('tipo',['entrada','salida']);
-            $table->time('hora');
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 @section('page3','active')
 @section('scripts')
 <script src="{{ asset('static/js/functionAssists.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 @endsection
 @section('contenido')
 <div class="container">

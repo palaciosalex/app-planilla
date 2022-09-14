@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Asisst;
+use App\Imports\AsisstsImport;
 use DataTables;
 use Illuminate\Support\Facades\DB;
 use Excel;
@@ -51,8 +52,7 @@ class AsisstsController extends Controller
             return response()->json(['success' => false,'errors'=>$validator->errors()->all()]);
         }
         $asisst=new Asisst;
-        $asisst->fecha=$request->fecha;
-        $asisst->hora=$request->hora;
+        $asisst->fecha_hora=$request->fecha." ".$request->hora;
         $asisst->tipo=$request->tipo;
         $asisst->employee_id=$request->trabajador_id;
         $asisst->save();
@@ -116,9 +116,10 @@ class AsisstsController extends Controller
 
     public function import(Request $request)
     {
+        /*
         if($request->hasFile('archivoImportacion')){
             $path = $request->file('archivoImportacion')->getRealPath();
-            $datos = Excel::load($path, function($reader){
+            $datos = Excel::import($path, function($reader){
             })->get();
 
             if(!empty($datos) && $datos->count()){
@@ -129,6 +130,7 @@ class AsisstsController extends Controller
             }
 
             Asisst::insert($datosImportar);
-        }
+        }*/
+        Excel::import(new AsisstsImport, request()->file('archivoImportacion'));
     }
 }

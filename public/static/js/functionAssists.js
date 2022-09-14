@@ -11,13 +11,27 @@ var tablaAsistencias = $('#tabla-asistencias').DataTable({
     type: 'GET',
     columns: [
       {data: 'trabajador'},
-      {data: 'fecha'},
+      {data: 'fecha_hora',
+        render: (data) => moment(data,"YYYY-MM-DD h:mm:ss").format("DD/MM/YY")
+      },
       {data: 'tipo'},
-      {data: 'hora'},
-      {data: 'id'},
+      {data: 'fecha_hora',
+        render: (data) => moment(data,"YYYY-MM-DD h:mm:ss").format("hh:mm a")
+      },
+      {data: 'id',
+        render: ( data, type, row ) =>  `<button class='btn btn-warning btn-sm' onclick='${showModal(data)}'>
+      <i class='bi bi-pencil-square'></i>
+      </button>&nbsp;
+      <button class='btn btn-danger btn-sm' onclick='${fntEliminar(data)}'>
+        <i class='bi bi-trash-fill'></i>
+      </button>`   
+      },
     ]
 });
 
+const showModal = (data) => console.log("showModal->", data);
+
+const fntEliminar = (data) => console.log("fntEliminar->", data);
 
 $( document ).ready(function() {
 
@@ -72,5 +86,30 @@ $( document ).ready(function() {
            }
         });
      });
+
+  $("#formImportacion").on('submit', function(e){
+
+    var type = "POST";
+    var ajaxurl = "asistencias/import";
+    e.preventDefault();
+    $.ajax({
+        type: type,
+        url: ajaxurl,
+        data: new FormData(this),
+        contentType: false,
+        cache: false,
+        processData:false,
+        success: function (data) {
+          alert("exito"+data);
+        },
+        error: function (data) {
+          alert("error"+data);
+        }
+    });
+  });
+
+
+
+
 });
   

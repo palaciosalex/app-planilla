@@ -19,7 +19,7 @@ return new class extends Migration
             ->foreign('employee_id')
             ->references('id')
             ->on('employees')
-            ->after('hora');
+            ->after('tipo');
         });
     }
 
