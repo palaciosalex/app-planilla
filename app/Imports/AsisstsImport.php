@@ -14,9 +14,11 @@ class AsisstsImport implements ToModel
     */
     public function model(array $row)
     {
+
         return new Asisst([
             //'fecha_hora' => Carbon::parse($row[0])->format('Y-m-d H:i:s'),
-            'fecha_hora' => Carbon::createFromFormat('d/m/Y H:i:s', $row[0])->format('Y-m-d H:i:s'),
+            //'fecha_hora' => Carbon::createFromFormat('d/m/Y H:i:s', $row[0])->format('Y-m-d H:i:s'),
+            'fecha_hora' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[0]),
             //'fecha_hora' => $row[0],
             'tipo'    => $row[1], 
             'employee_id' => $row[2],
