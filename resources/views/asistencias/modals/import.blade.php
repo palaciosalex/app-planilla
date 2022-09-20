@@ -3,7 +3,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-center" id="tituloForm">Importar</h5>
+        <h5 class="modal-title text-center">Importar</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"></span>
         </button>
@@ -11,7 +11,6 @@
       <form id="formImportacion" enctype="multipart/form-data">
       <div class="modal-body">
           <div class="mb-3">
-            <p>La importacion se realiza en base a la siguiente plantilla.</p>
             <button type="button" class="btn btn-success" id="btnDescargar"><i class="bi bi-arrow-down-circle"></i> Descargar planilla</button>
           </div>
           <div class="mb-3">

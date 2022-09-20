@@ -1,3 +1,4 @@
+ 
 var tablaAsistencias = $('#tabla-asistencias').DataTable({
     language: {
       url: "//cdn.datatables.net/plug-ins/1.12.1/i18n/es-ES.json"
@@ -7,33 +8,97 @@ var tablaAsistencias = $('#tabla-asistencias').DataTable({
     responsive:true,
     searching: false,
     scrollY: 400,
-    ajax: 'asistencias/getAssists',
-    type: 'GET',
+    ajax: {
+      url:'asistencias/getAssists',
+      data: function(d){
+        d.employee_id = $("#trabajador").val();
+        d.fecha_inicial = $("#fecha_inicial").val();;
+        d.fecha_final = $("#fecha_final").val();
+      }
+    },
+    type: 'POST',
     columns: [
       {data: 'trabajador'},
       {data: 'fecha_hora',
         render: (data) => moment(data,"YYYY-MM-DD h:mm:ss").format("DD/MM/YY")
+      },
+      {data: 'fecha_hora',
+        render: (data) => moment(data,"YYYY-MM-DD h:mm:ss").format("dddd")
       },
       {data: 'tipo'},
       {data: 'fecha_hora',
         render: (data) => moment(data,"YYYY-MM-DD h:mm:ss").format("hh:mm a")
       },
       {data: 'id',
-        render: ( data, type, row ) =>  `<button class='btn btn-warning btn-sm' onclick='${showModal(data)}'>
+        render: ( data, type, row ) =>  `<button class='btn btn-warning btn-sm' onclick='showModal(${data})'>
       <i class='bi bi-pencil-square'></i>
       </button>&nbsp;
-      <button class='btn btn-danger btn-sm' onclick='${fntEliminar(data)}'>
+      <button class='btn btn-danger btn-sm' onclick='fntEliminar(${data})'>
         <i class='bi bi-trash-fill'></i>
       </button>`   
       },
     ]
-});
+  });
 
-const showModal = (data) => console.log("showModal->", data);
+function fntEliminar(id){
+  
+  swal({
+    text: "Estas seguro(a) que desea eliminar este elemento! ",
+    icon: "warning",
+    buttons: ["Cancelar", "Aceptar"],
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+      $.ajax({
+        type: "DELETE",
+        url: "asistencias/"+id,
+        success: function (data) {
+            if(data.success){
+              swal("Listo", "La operación se realizo con exito", "success");
+              tablaAsistencias.ajax.reload();
+            }else{
+              alert("Error en el servidor");
+            }
+        },
+        error: function () {
+            alert("Error en el servidor");
+        }
+      });
+    }
+  });
+}
 
-const fntEliminar = (data) => console.log("fntEliminar->", data);
+function showModal(id){
+
+  $.ajax({
+    type: "GET",
+    url: "asistencias/"+id,
+    dataType: 'json',
+    success: function (data) {
+
+      $("#trabajador_modal_id").val(data.employee_id);
+      $("#fecha").val(moment(data.fecha_hora,"YYYY-MM-DD h:mm:ss").format("YYYY-MM-DD"));
+      $("#hora").val(moment(data.fecha_hora,"YYYY-MM-DD h:mm:ss").format("hh:mm"));
+      $('input[name=tipo_asistencia][value='+data.tipo+']').prop('checked', 'checked');
+      $("#formAgregar").modal('show');
+      $("#btnGuardar").val(id);
+      $("#tituloForm").html("Editar Asistencia");
+      $("#respuesta").html("");
+    },
+    error: function (data) {
+      alert("Error en el servidor");
+    }
+  });
+  
+}
+
 
 $( document ).ready(function() {
+
+    moment.lang('es', {
+      weekdays: 'Domingo_Lunes_Martes_Miercoles_Jueves_Viernes_Sabado'.split('_'),
+    }
+    );
 
     $.ajaxSetup({
         headers: {
@@ -104,19 +169,25 @@ $( document ).ready(function() {
             swal("Listo", "La importacion se realizo con exito", "success");
             tablaAsistencias.ajax.reload();
           }else{
-             $("#respuesta-import").html("<div class='alert alert-warning' role='alert'>"+
-             "Error en la fila "+data.errors[0].row+". "+data.errors[0].errors+"</div>");
-             console.log(data);
+             if(data.rules){
+                $("#respuesta-import").html("<div class='alert alert-warning' role='alert'>"+
+                "En la fila "+data.errors[0].row +". "+data.errors[0].errors);
+             }else{
+                $("#respuesta-import").html("<div class='alert alert-warning' role='alert'>"+data.errors[0]);
+             }
           }
+          $("#formImportacion")[0].reset();
         },
         error: function (data) {
           $("#respuesta-import").html("<div class='alert alert-warning' role='alert'>Error inesperado</div>");
-          console.log(data);
+          $("#formImportacion")[0].reset();
         }
     });
   });
 
-
+  $('#trabajador, #fecha_inicial, #fecha_final').on('change', function() {
+    tablaAsistencias.ajax.reload();
+  });
 
 
 });

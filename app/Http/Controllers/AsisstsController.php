@@ -68,7 +68,8 @@ class AsisstsController extends Controller
      */
     public function show($id)
     {
-        //
+        $asisst=Asisst::find($id);
+        return response()->json($asisst);
     }
 
     /**
@@ -91,7 +92,22 @@ class AsisstsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = \Validator::make($request->all(),[
+            'fecha' => 'required|date',
+            'hora' => 'required',
+            'trabajador_id' => 'required',
+            'tipo' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['success' => false,'errors'=>$validator->errors()->all()]);
+        }
+        $asisst=Asisst::find($id);
+        $asisst->fecha_hora=$request->fecha." ".$request->hora;
+        $asisst->tipo=$request->tipo;
+        $asisst->employee_id=$request->trabajador_id;
+        $asisst->save();
+        return response()->json(['success' => true,'msg'=>"La operación se realizó con exito"]);
     }
 
     /**
@@ -102,27 +118,51 @@ class AsisstsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Asisst::destroy($id);
+        return response()->json(['success' => true,'msg'=>"La operación se realizó con exito"]);
     }
 
-    public function getAssists()
+    public function getAssists(Request $request)
     {
+
+        $fecha_inicial = $request->fecha_inicial;
+        $fecha_final = $request->fecha_final;
+        $employee_id = $request->employee_id;
+
         $asissts = DB::table('asissts')
         ->select('asissts.*', 'employees.nombre as trabajador')
         ->join('employees', 'employees.id', '=', 'asissts.employee_id')
-        ->get();
+        ->whereBetween('fecha_hora', [$fecha_inicial, $fecha_final]);
+
+        if($employee_id!="0")
+        {
+            $asissts = $asissts->where('asissts.employee_id', $employee_id);
+        }
+
+        $asissts=$asissts->get();
+
         return DataTables::of($asissts)->toJson();
     }
 
     public function import(Request $request)
     {
-        try {
-            Excel::import(new AsisstsImport, request()->file('archivoImportacion'));
-            return response()->json(['success' => true,'msg'=>"La importacion se realizo con exito"]);
+        $validator = \Validator::make($request->all(),[
+            'archivoImportacion' => 'required|nullable|file|mimes:xlsx',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['success' => false,'errors'=>$validator->errors()->all()]);
         }
-        catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            $failures = $e->failures();
-            return response()->json(['success' => false,'errors'=>$failures]);
+        else{
+            try {
+                Excel::import(new AsisstsImport, request()->file('archivoImportacion'));
+                return response()->json(['success' => true,'msg'=>"La importacion se realizo con exito"]);
+            }
+            catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+                $failures = $e->failures();     
+                return response()->json(['success' => false,'errors'=>$failures, 'rules'=>true]);
+            }
         }
+
     }
 }

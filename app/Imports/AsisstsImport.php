@@ -19,9 +19,6 @@ class AsisstsImport implements ToModel, WithHeadingRow, WithValidation, WithMapp
     {
 
         return new Asisst([
-            //'fecha_hora' => Carbon::parse($row[0])->format('Y-m-d H:i:s'),
-            //'fecha_hora' => Carbon::createFromFormat('d/m/Y H:i:s', $row[0])->format('Y-m-d H:i:s'),
-            //'fecha_hora' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha_hora']),
             'fecha_hora' => $row['fecha_hora'],
             'tipo'    => $row['tipo'], 
             'employee_id' => $row['id_trabajador'],
@@ -53,10 +50,8 @@ class AsisstsImport implements ToModel, WithHeadingRow, WithValidation, WithMapp
         if(gettype($row['fecha_hora']) == 'double'){            
            $row['fecha_hora'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha_hora']); 
         }
-        else{
-           //$row['fecha_hora'] = Carbon::createFromFormat('d/m/Y H:i:s', $row['fecha_hora'])->format('Y-m-d H:i:s');
-            //...
-    
+        else if(gettype($row['fecha_hora']) == 'string'){
+           $row['fecha_hora'] = Carbon::createFromFormat('d/m/Y H:i:s', $row['fecha_hora'])->format('Y-m-d H:i:s');
         }
         $row['tipo'] = strtolower($row['tipo']); 
 

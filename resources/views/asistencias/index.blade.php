@@ -20,11 +20,11 @@
     </div>
     <div class="col-2">
         <label class="form-label">Fecha inicial</label>
-        <input type="date" class="form-control form-control-sm" value="{{ date('Y-m-d', strtotime('last sunday')) }}">
+        <input type="date" class="form-control form-control-sm" id="fecha_inicial" value="{{ date('Y-m-d', strtotime('last sunday')) }}">
     </div>
     <div class="col-2">
         <label class="form-label">Fecha final</label>
-        <input type="date" class="form-control form-control-sm" value="{{ date('Y-m-d', strtotime('friday this week')) }}">
+        <input type="date" class="form-control form-control-sm" id="fecha_final" value="{{ date('Y-m-d', strtotime('friday this week')) }}">
     </div>
     <div class="col-2 align-self-end">
         <button type="button" class="btn btn-secondary btn-sm">Filtrar</button>
@@ -40,6 +40,7 @@
         <tr>
         <th scope="col">Trabajador</th>
         <th scope="col">Fecha</th>
+        <th scope="col">Dia</th>
         <th scope="col">Tipo</th>
         <th scope="col">Hora</th>
         <th scope="col">Acciones</th>
