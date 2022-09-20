@@ -100,10 +100,18 @@ $( document ).ready(function() {
         cache: false,
         processData:false,
         success: function (data) {
-          alert("exito"+data);
+          if(data.success){
+            swal("Listo", "La importacion se realizo con exito", "success");
+            tablaAsistencias.ajax.reload();
+          }else{
+             $("#respuesta-import").html("<div class='alert alert-warning' role='alert'>"+
+             "Error en la fila "+data.errors[0].row+". "+data.errors[0].errors+"</div>");
+             console.log(data);
+          }
         },
         error: function (data) {
-          alert("error"+data);
+          $("#respuesta-import").html("<div class='alert alert-warning' role='alert'>Error inesperado</div>");
+          console.log(data);
         }
     });
   });

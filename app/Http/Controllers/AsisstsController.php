@@ -116,21 +116,13 @@ class AsisstsController extends Controller
 
     public function import(Request $request)
     {
-        /*
-        if($request->hasFile('archivoImportacion')){
-            $path = $request->file('archivoImportacion')->getRealPath();
-            $datos = Excel::import($path, function($reader){
-            })->get();
-
-            if(!empty($datos) && $datos->count()){
-                $datos->toArray();
-                for($i=0; $i< count($datos); $i++){
-                    $datosImportar[]=$datos[$i];
-                }
-            }
-
-            Asisst::insert($datosImportar);
-        }*/
-        Excel::import(new AsisstsImport, request()->file('archivoImportacion'));
+        try {
+            Excel::import(new AsisstsImport, request()->file('archivoImportacion'));
+            return response()->json(['success' => true,'msg'=>"La importacion se realizo con exito"]);
+        }
+        catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            return response()->json(['success' => false,'errors'=>$failures]);
+        }
     }
 }
