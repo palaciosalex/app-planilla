@@ -154,6 +154,8 @@ $( document ).ready(function() {
 
   $("#formImportacion").on('submit', function(e){
 
+    $(".loading").fadeToggle();
+    
     var type = "POST";
     var ajaxurl = "asistencias/import";
     e.preventDefault();
@@ -165,6 +167,7 @@ $( document ).ready(function() {
         cache: false,
         processData:false,
         success: function (data) {
+          
           if(data.success){
             swal("Listo", "La importacion se realizo con exito", "success");
             tablaAsistencias.ajax.reload();
@@ -183,6 +186,7 @@ $( document ).ready(function() {
           $("#formImportacion")[0].reset();
         }
     });
+
   });
 
   $('#trabajador, #fecha_inicial, #fecha_final').on('change', function() {
