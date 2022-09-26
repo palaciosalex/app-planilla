@@ -17,8 +17,8 @@
             <label for="archivoImportacion" class="form-label">Seleccionar archivo</label>
             <input class="form-control" type="file" id="archivoImportacion" name="archivoImportacion">
           </div>
+        <img class="loading" src="{{ asset('static/img/loading.gif') }}"/>
         <div id="respuesta-import" class="text-center">
-            <img class="loading" src="{{ asset('static/img/loading.gif') }}"/>
         </div>
       </div>
       <div class="modal-footer">

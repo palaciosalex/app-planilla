@@ -50,12 +50,10 @@ class AsisstsImport implements ToModel, WithHeadingRow, WithValidation, WithMapp
         if(gettype($row['fecha_hora']) == 'double'){            
            $row['fecha_hora'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha_hora']); 
         }
-        else if(gettype($row['fecha_hora']) == 'string'){
-           $row['fecha_hora'] = Carbon::createFromFormat('d/m/Y H:i:s', $row['fecha_hora'])->format('Y-m-d H:i:s');
+        else if(Asisst::isValid($row['fecha_hora'],'d/m/Y H:i:s') || Asisst::isValid($row['fecha_hora'],'j/m/Y H:i:s')){
+            $row['fecha_hora'] = Carbon::createFromFormat('d/m/Y H:i:s', $row['fecha_hora'])->format('Y-m-d H:i:s');
         }
         $row['tipo'] = strtolower($row['tipo']); 
-
-        
         return $row;
     }
 }

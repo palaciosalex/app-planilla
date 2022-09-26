@@ -154,8 +154,6 @@ $( document ).ready(function() {
 
   $("#formImportacion").on('submit', function(e){
 
-    $(".loading").fadeToggle();
-    
     var type = "POST";
     var ajaxurl = "asistencias/import";
     e.preventDefault();
@@ -166,8 +164,12 @@ $( document ).ready(function() {
         contentType: false,
         cache: false,
         processData:false,
+        beforeSend: function(){
+          $("#respuesta-import").html("");
+          $(".loading").css("display", "block");
+        },
         success: function (data) {
-          
+          $(".loading").css("display", "none");
           if(data.success){
             swal("Listo", "La importacion se realizo con exito", "success");
             tablaAsistencias.ajax.reload();
@@ -182,6 +184,7 @@ $( document ).ready(function() {
           $("#formImportacion")[0].reset();
         },
         error: function (data) {
+          $(".loading").css("display", "none");
           $("#respuesta-import").html("<div class='alert alert-warning' role='alert'>Error inesperado</div>");
           $("#formImportacion")[0].reset();
         }
