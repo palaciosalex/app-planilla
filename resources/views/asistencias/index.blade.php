@@ -26,10 +26,7 @@
         <label class="form-label">Fecha final</label>
         <input type="date" class="form-control form-control-sm" id="fecha_final" value="{{ date('Y-m-d', strtotime('friday this week')) }}">
     </div>
-    <div class="col-2 align-self-end">
-        <button type="button" class="btn btn-secondary btn-sm">Filtrar</button>
-    </div>
-    <div class="col-3 align-self-end ">
+    <div class="col-5 align-self-end text-end">
         <button type="button" class="btn btn-success btn-sm" id="btnAgregar">Agregar</button>
         <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#formImport">Importar</button>
     </div>
