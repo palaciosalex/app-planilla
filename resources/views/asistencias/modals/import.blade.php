@@ -11,7 +11,7 @@
       <form id="formImportacion" enctype="multipart/form-data">
       <div class="modal-body">
           <div class="mb-3">
-            <button type="button" class="btn btn-success" id="btnDescargar"><i class="bi bi-arrow-down-circle"></i> Descargar planilla</button>
+            <a href="{{ asset('static/files/plantilla.xlsx') }}" download="Plantilla.xlsx" class="btn btn-success" id="btnDescargar"><i class="bi bi-arrow-down-circle"></i> Descargar planilla</a>
           </div>
           <div class="mb-3">
             <label for="archivoImportacion" class="form-label">Seleccionar archivo</label>
