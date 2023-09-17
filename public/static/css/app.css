@@ -4,10 +4,35 @@ h5{
 }
 #seccion-table{
     margin-top: 30px;
-    margin-bottom: 80px;
+    
 }
 .loading{
     width: 50px;
     display: none;
     margin: auto;
+}
+
+#hours-table{
+    table-layout: fixed;
+}
+
+#hours-table th{
+    width: 100px;
+    overflow: auto;
+}
+
+
+#hours-table input[type="time"]{
+    text-align: center;
+    width: 90px;
+}
+
+#hours-table td{
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.container{
+    margin-bottom: 90px;
 }

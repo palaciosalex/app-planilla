@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use DataTables;
+use PDF;
 
 class EmployeesController extends Controller
 {
@@ -128,5 +129,12 @@ class EmployeesController extends Controller
     {
         $employees=Employee::where('estado', '=', 'A');
         return DataTables::of($employees)->toJson();
+    }
+
+    public function getexportPDF()
+    {
+        $employees=Employee::all();
+        $pdf = PDF::loadView('trabajadores.imprimir', ['employees'=>$employees]);
+        return $pdf->stream();
     }
 }

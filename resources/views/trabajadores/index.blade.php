@@ -3,6 +3,9 @@
 @section('page2','active')
 @section('scripts')
 <script src="{{ asset('static/js/functionEmployees.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script type="text/javascript" src="{{ asset('static/js/libs/html2canvas.js') }}"></script>
+<!--<script src="{{ asset('static/js/libs/jspdf.min.js') }}"></script>-->
 @endsection
 @section('contenido')
 <div class="container">
@@ -10,6 +13,9 @@
 <div class="row">
     <div class="col-3">
         <button class="btn btn-success" id="btnAgregar">Agregar</button>
+    </div>
+    <div class="col-3">
+        <a href="/trabajadores/getexportpdf" class="btn btn-primary" id="btnAgregar" target="_blank">Impimir</a>
     </div>
 </div>
 <div class="row" id="seccion-table">

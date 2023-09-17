@@ -132,7 +132,9 @@ class AsisstsController extends Controller
         $asissts = DB::table('asissts')
         ->select('asissts.*', 'employees.nombre as trabajador')
         ->join('employees', 'employees.id', '=', 'asissts.employee_id')
-        ->whereBetween('fecha_hora', [$fecha_inicial, $fecha_final]);
+        ->where('employees.estado','=','A')
+        ->whereDate('fecha_hora', '>=', $fecha_inicial)
+        ->whereDate('fecha_hora', '<=', $fecha_final);
 
         if($employee_id!="0")
         {

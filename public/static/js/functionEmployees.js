@@ -57,6 +57,33 @@ function fntEliminar(id){
   });
 }
 
+
+function genPDF(){
+  /*var doc=new jsPDF();
+
+  var cuerpo = document.getElementById("seccion-table");
+
+  doc.text(20,20,cuerpo);
+  doc.save('Midocumento.pdf');
+  */
+
+  const { jsPDF } = window.jspdf;
+
+  var doc = new jsPDF('l', 'mm', [1200, 1810]);
+  var pdfjs = document.querySelector('#seccion-table');
+
+  doc.html(pdfjs, {
+          callback: function(doc) {
+              doc.save("output.pdf");
+          },
+          x: 10,
+          y: 10
+  });
+
+  doc.output('dataurlnewwindow');
+ }
+
+
 function showModal(id){
 
   $.ajax({
